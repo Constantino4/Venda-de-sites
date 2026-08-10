@@ -1,0 +1,6 @@
+{
+  "name": "WebMarket - Venda e Compra de Sites",
+  "description": "Plataforma completa para publicar, testar, customizar e vender sites e sistemas prontos com licenças e visualizador interativo.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

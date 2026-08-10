@@ -1,0 +1,46 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "Catalogo de websites e templates a venda",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "slug": { "type": "string" },
+        "category": { "type": "string" },
+        "priceStandard": { "type": "number" },
+        "status": { "type": "string", "enum": ["active", "hidden"] },
+        "currentVersion": { "type": "string" },
+        "privateZipStoragePath": { "type": "string" },
+        "publicDemoStoragePath": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "title", "priceStandard", "status"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Pedido de compra de licença de website",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "customerEmail": { "type": "string" },
+        "totalAmount": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "paid", "cancelled"] },
+        "paymentMethod": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "customerEmail", "status"]
+    }
+  },
+  "firestore": {
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Coleção de produtos cadastrados no mercado"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Coleção de pedidos e licenças compradas"
+    }
+  }
+}
