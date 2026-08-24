@@ -1,12 +1,12 @@
 {
-  "projectId": "boreal-protocol-rxctm",
-  "appId": "1:470253522339:web:3c19807ef380617bcdde16",
-  "apiKey": "AIzaSyA4UmpKYqJGicNyhvOixTmXan6x6idGUUw",
-  "authDomain": "boreal-protocol-rxctm.firebaseapp.com",
-  "firestoreDatabaseId": "ai-studio-webmarketvendaec-bb90a8e6-8d53-4836-826b-25456eba4812",
-  "storageBucket": "boreal-protocol-rxctm.firebasestorage.app",
-  "messagingSenderId": "470253522339",
+  "projectId": "studio-9909916558-6949c",
+  "appId": "1:1013113734851:web:4a74309a0be2a0470d8476",
+  "apiKey": "AIzaSyCXpB0fiDgcViAQ9-2eq-8HclM-Frh411o",
+  "authDomain": "studio-9909916558-6949c.firebaseapp.com",
+  "firestoreDatabaseId": "(default)",
+  "storageBucket": "studio-9909916558-6949c.firebasestorage.app",
+  "messagingSenderId": "1013113734851",
   "measurementId": "",
-  "oAuthClientId": "470253522339-9i4k4tmkhh2r1atiqq1fo5v6mvqkuh0t.apps.googleusercontent.com",
+  "oAuthClientId": "",
   "recaptchaSiteKey": ""
 }

@@ -15,7 +15,7 @@ export const Footer: React.FC = () => {
                 <Globe className="w-4 h-4" />
               </div>
               <span className="text-lg font-black text-slate-900 tracking-tight">
-                Web<span className="text-blue-600">Market</span>
+                Site<span className="text-blue-600">Forge</span>
               </span>
             </div>
             <p className="text-xs text-slate-500 leading-relaxed font-normal">
@@ -68,7 +68,7 @@ export const Footer: React.FC = () => {
 
         {/* Bottom Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400 text-[11px] font-medium">
-          <p>© 2026 WebMarket Tecnologia. Todos os direitos reservados.</p>
+          <p>© 2026 SiteForge Tecnologia. Todos os direitos reservados.</p>
           <p className="flex items-center gap-1">
             Desenvolvido com <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" /> para programadores e empreendedores.
           </p>

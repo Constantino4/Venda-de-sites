@@ -1,6 +1,6 @@
 import React from 'react';
 import { Website } from '../types';
-import { Star, Eye, ShoppingBag, CheckCircle, ArrowUpRight } from 'lucide-react';
+import { Star, Eye, ShoppingBag, CheckCircle, ArrowUpRight, Layers } from 'lucide-react';
 
 interface SiteCardProps {
   website: Website;
@@ -27,9 +27,17 @@ export const SiteCard: React.FC<SiteCardProps> = ({
           loading="lazy"
         />
 
-        {/* Category Tag */}
-        <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-md border border-slate-200 text-slate-800 text-[11px] font-bold px-2.5 py-1 rounded-full shadow-xs">
-          {website.categoryName}
+        {/* Category & Page Count Tag */}
+        <div className="absolute top-3 left-3 flex items-center gap-1.5">
+          <span className="bg-white/95 backdrop-blur-md border border-slate-200 text-slate-800 text-[11px] font-bold px-2.5 py-1 rounded-full shadow-xs">
+            {website.categoryName}
+          </span>
+          {website.pageCount && (
+            <span className="bg-slate-900/90 backdrop-blur-md text-white text-[11px] font-bold px-2.5 py-1 rounded-full shadow-xs flex items-center gap-1">
+              <Layers className="w-3 h-3 text-blue-400" />
+              <span>{website.pageCount} páginas</span>
+            </span>
+          )}
         </div>
 
         {/* Verified Seller Badge */}

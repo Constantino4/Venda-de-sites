@@ -17,12 +17,12 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   onRemoveItem,
   onProceedToCheckout,
 }) => {
-  if (!isOpen) return null;
-
   const [coupon, setCoupon] = useState('');
   const [discountPercent, setDiscountPercent] = useState(0);
   const [couponError, setCouponError] = useState('');
   const [couponSuccess, setCouponSuccess] = useState('');
+
+  if (!isOpen) return null;
 
   const subtotal = items.reduce((acc, item) => acc + item.selectedPrice, 0);
   const discountAmount = (subtotal * discountPercent) / 100;

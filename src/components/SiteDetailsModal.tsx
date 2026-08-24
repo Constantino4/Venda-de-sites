@@ -15,14 +15,26 @@ export const SiteDetailsModal: React.FC<SiteDetailsModalProps> = ({
   onOpenLiveDemo,
   onAddToCartWithLicense,
 }) => {
-  if (!website) return null;
-
   const [activeTab, setActiveTab] = useState<'overview' | 'code' | 'reviews' | 'license'>('overview');
   const [selectedLicense, setSelectedLicense] = useState<LicenseOption>('standard');
-  const [activeImage, setActiveImage] = useState<string>(website.thumbnail);
+  const [activeImage, setActiveImage] = useState<string>(website ? website.thumbnail : '');
   const [selectedCodeFile, setSelectedCodeFile] = useState<string>(
-    Object.keys(website.sampleFiles || {})[0] || 'README.md'
+    website && website.sampleFiles ? Object.keys(website.sampleFiles)[0] || 'README.md' : 'README.md'
   );
+
+  // Sync activeImage and selectedCodeFile when website changes
+  React.useEffect(() => {
+    if (website) {
+      setActiveImage(website.thumbnail);
+      setSelectedCodeFile(
+        website.sampleFiles && Object.keys(website.sampleFiles).length > 0
+          ? Object.keys(website.sampleFiles)[0]
+          : 'README.md'
+      );
+    }
+  }, [website]);
+
+  if (!website) return null;
 
   const getPriceForLicense = (lic: LicenseOption) => {
     switch (lic) {
@@ -268,6 +280,26 @@ export const SiteDetailsModal: React.FC<SiteDetailsModalProps> = ({
                   {website.fullDescription}
                 </p>
               </div>
+
+              {/* Included Pages */}
+              {website.pages && website.pages.length > 0 && (
+                <div>
+                  <h3 className="text-sm font-bold text-slate-900 mb-3 flex items-center justify-between">
+                    <span>Páginas Inclusas no Template</span>
+                    <span className="text-xs font-bold text-blue-600 bg-blue-50 px-2.5 py-0.5 rounded-full border border-blue-200">
+                      {website.pages.length} páginas prontas
+                    </span>
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {website.pages.map((p, idx) => (
+                      <span key={idx} className="bg-slate-50 text-slate-800 text-xs px-3 py-1.5 rounded-xl border border-slate-200 font-semibold flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                        {p}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
 
               {/* Key Features Grid */}
               <div>

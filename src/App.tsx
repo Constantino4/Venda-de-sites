@@ -8,12 +8,23 @@ import { SiteDetailsModal } from './components/SiteDetailsModal';
 import { LivePreviewModal } from './components/LivePreviewModal';
 import { SellerDashboard } from './components/SellerDashboard';
 import { PurchasedSitesModal } from './components/PurchasedSitesModal';
+import { GitHubDeployModal } from './components/GitHubDeployModal';
 import { CartDrawer } from './components/CartDrawer';
 import { CheckoutModal } from './components/CheckoutModal';
 import { AiAssistantDrawer } from './components/AiAssistantDrawer';
+import { AuthModal } from './components/AuthModal';
 import { Footer } from './components/Footer';
+import { AuthProvider } from './lib/AuthContext';
 
 export default function App() {
+  return (
+    <AuthProvider>
+      <MainAppContent />
+    </AuthProvider>
+  );
+}
+
+function MainAppContent() {
   // Websites catalog state
   const [websites, setWebsites] = useState<Website[]>(MOCK_SITES);
 
@@ -37,6 +48,13 @@ export default function App() {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState<boolean>(false);
   const [checkoutDiscount, setCheckoutDiscount] = useState<number>(0);
   const [isAiAssistantOpen, setIsAiAssistantOpen] = useState<boolean>(false);
+  const [isGithubDeployOpen, setIsGithubDeployOpen] = useState<boolean>(false);
+  const [githubDeployTarget, setGithubDeployTarget] = useState<{ id: string; title: string; slug?: string } | null>(null);
+
+  const handleOpenGithubDeploy = (product?: { id: string; title: string; slug?: string }) => {
+    setGithubDeployTarget(product || null);
+    setIsGithubDeployOpen(true);
+  };
 
   // Cart & Purchases state
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
@@ -151,6 +169,7 @@ export default function App() {
         setActiveView={setActiveView}
         onOpenCart={() => setIsCartOpen(true)}
         onOpenAiAssistant={() => setIsAiAssistantOpen(true)}
+        onOpenGithubDeploy={() => handleOpenGithubDeploy()}
         searchQuery={filters.searchQuery}
         setSearchQuery={(q) => setFilters((f) => ({ ...f, searchQuery: q }))}
       />
@@ -182,6 +201,8 @@ export default function App() {
           <SellerDashboard
             onAddNewListing={handleAddNewListing}
             existingSites={websites}
+            onUpdateWebsites={(updated) => setWebsites(updated)}
+            onOpenLiveDemo={(site) => setSelectedDemoSite(site)}
           />
         )}
 
@@ -189,12 +210,21 @@ export default function App() {
           <PurchasedSitesModal
             purchasedSites={purchasedSites}
             onClose={() => setActiveView('marketplace')}
+            onOpenGithubDeploy={handleOpenGithubDeploy}
+            onOpenLiveDemo={(site) => setSelectedDemoSite(site)}
           />
         )}
       </main>
 
       {/* Footer */}
       <Footer />
+
+      {/* Modals & Drawers */}
+      <GitHubDeployModal
+        isOpen={isGithubDeployOpen}
+        onClose={() => setIsGithubDeployOpen(false)}
+        targetProduct={githubDeployTarget}
+      />
 
       {/* Modals & Drawers */}
       <SiteDetailsModal
@@ -231,7 +261,11 @@ export default function App() {
         onClose={() => setIsAiAssistantOpen(false)}
         availableSites={websites}
         onOpenDetails={(site) => setSelectedDetailsSite(site)}
+        onOpenLiveDemo={(site) => setSelectedDemoSite(site)}
+        onAddToCart={(site) => handleAddToCart(site, 'standard')}
       />
+
+      <AuthModal />
 
     </div>
   );

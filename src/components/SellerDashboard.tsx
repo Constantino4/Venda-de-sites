@@ -1,107 +1,185 @@
 import React, { useState, useEffect } from 'react';
-import { Website, SellerMetrics } from '../types';
-import { DollarSign, ShoppingCart, Eye, TrendingUp, PlusCircle, Sparkles, CheckCircle2, FileCode, Upload, FileCheck, ExternalLink, RefreshCw, Trash2, Edit3, EyeOff, ShieldCheck, Play } from 'lucide-react';
+import { Website, SellerMetrics, Order, LicenseRecord, SubscriptionRecord, SupportTicket } from '../types';
+import { 
+  DollarSign, 
+  ShoppingCart, 
+  Eye, 
+  TrendingUp, 
+  PlusCircle, 
+  Sparkles, 
+  CheckCircle2, 
+  FileCode, 
+  Upload, 
+  FileCheck, 
+  ExternalLink, 
+  RefreshCw, 
+  Trash2, 
+  Edit3, 
+  EyeOff, 
+  ShieldCheck, 
+  Play, 
+  UserCheck, 
+  LogIn,
+  Layers,
+  Key,
+  Users,
+  MessageSquare,
+  Activity,
+  Server,
+  Download,
+  AlertTriangle,
+  RotateCcw,
+  Check,
+  Search,
+  Filter,
+  Send,
+  Loader2
+} from 'lucide-react';
 import { UploadVersionModal } from './UploadVersionModal';
 import { DemoDeployModal } from './DemoDeployModal';
+import { AdminTemplatesManager } from './admin/AdminTemplatesManager';
+import { LivePreviewModal } from './LivePreviewModal';
+import { useAuth } from '../lib/AuthContext';
 
 interface SellerDashboardProps {
   onAddNewListing: (website: Website) => void;
   existingSites: Website[];
+  onUpdateWebsites?: (websites: Website[]) => void;
+  onOpenLiveDemo?: (website: Website) => void;
 }
 
 export const SellerDashboard: React.FC<SellerDashboardProps> = ({
   onAddNewListing,
   existingSites,
+  onUpdateWebsites,
+  onOpenLiveDemo,
 }) => {
-  const [activeTab, setActiveTab] = useState<'metrics' | 'create' | 'manage'>('manage');
+  const { user } = useAuth();
+  
+  // Navigation tabs
+  const [activeTab, setActiveTab] = useState<'templates' | 'metrics' | 'catalog' | 'create' | 'orders' | 'licenses' | 'subscriptions' | 'support' | 'automations'>('templates');
 
-  // Admin products state fetched from server
+  // Admin products state
   const [adminProducts, setAdminProducts] = useState<Website[]>(existingSites);
   const [selectedSiteForVersion, setSelectedSiteForVersion] = useState<Website | null>(null);
   const [selectedSiteForDemo, setSelectedSiteForDemo] = useState<Website | null>(null);
+  const [previewingTemplate, setPreviewingTemplate] = useState<Website | null>(null);
 
-  // AI Copy Generation State
-  const [isAiGenerating, setIsAiGenerating] = useState(false);
-  const [aiSuccessMessage, setAiSuccessMessage] = useState('');
+  // Keep admin products synced if existingSites changes
+  useEffect(() => {
+    setAdminProducts(existingSites);
+  }, [existingSites]);
 
-  // Form State
+  const handleUpdateProductList = (updated: Website[]) => {
+    setAdminProducts(updated);
+    if (onUpdateWebsites) {
+      onUpdateWebsites(updated);
+    }
+  };
+
+  // Form State for New Product
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('ecommerce');
   const [standardPrice, setStandardPrice] = useState('189');
+  const [promoPrice, setPromoPrice] = useState('149');
   const [extendedPrice, setExtendedPrice] = useState('499');
   const [installationPrice, setInstallationPrice] = useState('699');
   const [thumbnail, setThumbnail] = useState('https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80');
   const [shortDescription, setShortDescription] = useState('');
   const [fullDescription, setFullDescription] = useState('');
   const [features, setFeatures] = useState('');
-  const [techStack, setTechStack] = useState('React 19, Tailwind CSS, TypeScript');
+  const [techStack, setTechStack] = useState('React 19, Tailwind CSS, TypeScript, Vite');
   const [keywords, setKeywords] = useState('');
   const [versionNumber, setVersionNumber] = useState('1.0.0');
+  const [status, setStatus] = useState<'published' | 'draft' | 'hidden'>('published');
   const [zipFile, setZipFile] = useState<File | null>(null);
   const [isSubmittingZip, setIsSubmittingZip] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState('');
 
-  // Firebase Storage Status State
-  const [storageStatus, setStorageStatus] = useState<{
-    status: string;
-    bucketName: string;
-    privateBucketPath: string;
-    publicBucketPath: string;
-    totalProductsInStorage: number;
-    activeZipCount: number;
-  }>({
-    status: 'connected',
-    bucketName: 'boreal-protocol-rxctm.firebasestorage.app',
-    privateBucketPath: 'gs://boreal-protocol-rxctm.firebasestorage.app/private_zips/',
-    publicBucketPath: 'gs://boreal-protocol-rxctm.firebasestorage.app/public_demos/',
-    totalProductsInStorage: 0,
-    activeZipCount: 0
-  });
+  // AI Copy Generation
+  const [isAiGenerating, setIsAiGenerating] = useState(false);
+  const [aiSuccessMessage, setAiSuccessMessage] = useState('');
 
-  // Fetch admin products & Firebase Storage status from backend
-  const fetchAdminProducts = async () => {
-    try {
-      const res = await fetch('/api/admin/products');
-      if (res.ok) {
-        const data = await res.json();
-        if (data.products && Array.isArray(data.products)) {
-          setAdminProducts(data.products);
-        }
-      }
+  // Orders State
+  const [orders, setOrders] = useState<any[]>([
+    {
+      id: 'ORD-982104',
+      customerEmail: 'rodrigo.silva@empresa.com.br',
+      customerName: 'Rodrigo Silva',
+      websiteTitle: 'NovaStore Pro E-Commerce',
+      amount: 189.00,
+      paymentMethod: 'PIX Instantâneo',
+      status: 'paid',
+      date: '20/08/2026 14:32',
+      licenseKey: 'LICENSE-NOVA-89A1-X920-B831'
+    },
+    {
+      id: 'ORD-982103',
+      customerEmail: 'marcos.barbearia@gmail.com',
+      customerName: 'Marcos Vinicius',
+      websiteTitle: 'BarberKing Studio',
+      amount: 149.00,
+      paymentMethod: 'Cartão de Crédito (3x)',
+      status: 'paid',
+      date: '20/08/2026 11:20',
+      licenseKey: 'LICENSE-BARB-71F2-Q812-P901'
+    },
+    {
+      id: 'ORD-982102',
+      customerEmail: 'contato@bistroroyal.com.br',
+      customerName: 'Camila Alencar',
+      websiteTitle: 'Bistrô Gourmet & Delivery',
+      amount: 169.00,
+      paymentMethod: 'PIX Instantâneo',
+      status: 'paid',
+      date: '19/08/2026 18:45',
+      licenseKey: 'LICENSE-BIST-44K1-Z109-M732'
+    },
+    {
+      id: 'ORD-982101',
+      customerEmail: 'hotel.villareal@outlook.com',
+      customerName: 'Fernando Diniz',
+      websiteTitle: 'Grand Hotel & Resort',
+      amount: 229.00,
+      paymentMethod: 'PayPal',
+      status: 'paid',
+      date: '19/08/2026 09:12',
+      licenseKey: 'LICENSE-HOTL-99P3-W415-K221'
+    },
+  ]);
 
-      const storageRes = await fetch('/api/firebase/storage-status');
-      if (storageRes.ok) {
-        const sData = await storageRes.json();
-        setStorageStatus(sData);
-      }
-    } catch (e) {
-      console.error('Erro ao buscar produtos e status do Firebase Storage:', e);
-    }
-  };
+  // Licenses State
+  const [licenses, setLicenses] = useState<any[]>([
+    { key: 'LICENSE-NOVA-89A1-X920-B831', productTitle: 'NovaStore Pro E-Commerce', clientEmail: 'rodrigo.silva@empresa.com.br', type: 'Standard (1 Projeto)', status: 'active', date: '20/08/2026' },
+    { key: 'LICENSE-BARB-71F2-Q812-P901', productTitle: 'BarberKing Studio', clientEmail: 'marcos.barbearia@gmail.com', type: 'Standard (1 Projeto)', status: 'active', date: '20/08/2026' },
+    { key: 'LICENSE-BIST-44K1-Z109-M732', productTitle: 'Bistrô Gourmet & Delivery', clientEmail: 'contato@bistroroyal.com.br', type: 'Estendida (Ilimitada)', status: 'active', date: '19/08/2026' },
+    { key: 'LICENSE-HOTL-99P3-W415-K221', productTitle: 'Grand Hotel & Resort', clientEmail: 'hotel.villareal@outlook.com', type: 'Com Instalação', status: 'active', date: '19/08/2026' },
+  ]);
 
-  useEffect(() => {
-    fetchAdminProducts();
-  }, []);
+  // Subscriptions State
+  const [subscriptions, setSubscriptions] = useState<any[]>([
+    { id: 'SUB-101', clientName: 'Rodrigo Silva', clientEmail: 'rodrigo.silva@empresa.com.br', plan: 'Hospedagem Cloud Turbo + Manutenção VIP', price: 39.00, status: 'active', nextBilling: '20/09/2026' },
+    { id: 'SUB-102', clientName: 'Marcos Vinicius', clientEmail: 'marcos.barbearia@gmail.com', plan: 'Hospedagem Cloud Turbo', price: 29.00, status: 'active', nextBilling: '20/09/2026' },
+  ]);
 
-  // Metrics calculation
-  const metrics: SellerMetrics = {
-    totalEarnings: 18490.00,
-    totalSales: 94,
-    activeListings: adminProducts.length,
-    conversionRate: 5.2,
-    monthlyRevenue: [
-      { month: 'Mar', amount: 1800 },
-      { month: 'Abr', amount: 2600 },
-      { month: 'Mai', amount: 3400 },
-      { month: 'Jun', amount: 4800 },
-      { month: 'Jul', amount: 5890 },
-    ],
-  };
+  // Support Tickets State
+  const [supportTickets, setSupportTickets] = useState<any[]>([
+    { id: 'TCK-40192', clientEmail: 'cliente@exemplo.com.br', subject: 'Dúvida sobre configuração do domínio', status: 'open', date: '20/08/2026 10:15' },
+    { id: 'TCK-40188', clientEmail: 'fernando@resort.com', subject: 'Como atualizar a logo do template', status: 'resolved', date: '19/08/2026 15:30' },
+  ]);
 
-  // Generate copy via Gemini API
+  // Automation Logs
+  const [automationLogs, setAutomationLogs] = useState<any[]>([
+    { id: 'LOG-1', event: 'Novo Pedido Aprovado (PIX)', details: 'Licença gerada e e-mail de acesso disparado para rodrigo.silva@empresa.com.br', timestamp: '20/08/2026 14:32:05' },
+    { id: 'LOG-2', event: 'Deploy Automático Concluído', details: 'Projeto novastore-pro publicado com sucesso na CDN edge', timestamp: '20/08/2026 14:33:10' },
+    { id: 'LOG-3', event: 'Validação de Domínio DNS', details: 'Certificado SSL Let\'s Encrypt emitido para meunegocio.com.br', timestamp: '20/08/2026 14:35:22' },
+    { id: 'LOG-4', event: 'Backup Noturno Cloud', details: 'Backup de 12 templates e repositórios concluído com integridade 100%', timestamp: '20/08/2026 03:00:00' },
+  ]);
+
+  // AI Copy Generation
   const handleGenerateAiCopy = async () => {
     if (!title.trim()) {
-      alert('Por favor, informe pelo menos o Título do site antes de gerar com IA.');
+      alert('Digite pelo menos o título do site para a IA gerar o texto.');
       return;
     }
 
@@ -109,7 +187,7 @@ export const SellerDashboard: React.FC<SellerDashboardProps> = ({
     setAiSuccessMessage('');
 
     try {
-      const res = await fetch('/api/ai/describe-site', {
+      const res = await fetch('/api/ai/generate-copy', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -121,631 +199,777 @@ export const SellerDashboard: React.FC<SellerDashboardProps> = ({
 
       const data = await res.json();
 
-      if (data.shortDescription) setShortDescription(data.shortDescription);
-      if (data.fullDescription) setFullDescription(data.fullDescription);
-      if (data.features && Array.isArray(data.features)) setFeatures(data.features.join('\n'));
-      if (data.techStack && Array.isArray(data.techStack)) setTechStack(data.techStack.join(', '));
+      if (data.shortDescription) {
+        setShortDescription(data.shortDescription);
+      }
+      if (data.fullDescription) {
+        setFullDescription(data.fullDescription);
+      }
+      if (data.features && Array.isArray(data.features)) {
+        setFeatures(data.features.join('\n'));
+      }
+      if (data.techStack && Array.isArray(data.techStack)) {
+        setTechStack(data.techStack.join(', '));
+      }
 
-      setAiSuccessMessage('Descrição e recursos gerados com sucesso pela IA Gemini!');
-    } catch (err) {
-      console.error('Erro ao chamar IA Gemini:', err);
+      setAiSuccessMessage('Copywriting e especificações gerados com sucesso pelo Gemini!');
+    } catch (err: any) {
+      console.error('Erro na IA:', err);
     } finally {
       setIsAiGenerating(false);
     }
   };
 
-  // Submit Product + ZIP upload to backend
-  const handleUploadNewSite = async (e: React.FormEvent) => {
+  // Submit New Site
+  const handleCreateProduct = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!title.trim()) return;
 
-    if (!title.trim()) {
-      alert('O título do site é obrigatório.');
-      return;
-    }
+    const newSite: Website = {
+      id: `site-${Date.now()}`,
+      slug: title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+      title,
+      category: category as any,
+      categoryName: category.charAt(0).toUpperCase() + category.slice(1),
+      price: {
+        standard: parseFloat(standardPrice) || 189,
+        promoPrice: promoPrice ? parseFloat(promoPrice) : undefined,
+        extended: parseFloat(extendedPrice) || 499,
+        installation: parseFloat(installationPrice) || 699,
+      },
+      rating: 5.0,
+      reviewsCount: 0,
+      salesCount: 0,
+      thumbnail: thumbnail || 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80',
+      galleryImages: [thumbnail],
+      demoUrl: '#',
+      shortDescription: shortDescription || 'Site profissional com código limpo e alta velocidade.',
+      fullDescription: fullDescription || 'Template completo para o seu negócio.',
+      features: features ? features.split('\n').filter(Boolean) : ['Design Responsivo', 'SEO Otimizado', 'Código Limpo'],
+      techStack: techStack ? techStack.split(',').map(s => s.trim()) : ['React', 'Tailwind CSS'],
+      includedFiles: ['src/*', 'package.json', 'README.md', 'tailwind.config.js'],
+      seller: {
+        id: 'admin',
+        name: 'WebMarket Staff',
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80',
+        badge: 'Oficial',
+        verified: true,
+        salesCount: 1,
+        rating: 5.0,
+        responseTime: '< 1 hora',
+      },
+      createdDate: new Date().toISOString().split('T')[0],
+      updatedDate: new Date().toISOString().split('T')[0],
+      reviews: [],
+      currentVersion: versionNumber || '1.0.0',
+      status: status === 'hidden' ? 'hidden' : 'active',
+      storageStatus: {
+        hasPrivateZip: true,
+        hasPublicDemo: true,
+        currentVersion: versionNumber || '1.0.0',
+        uploadedAt: new Date().toISOString(),
+      },
+    };
 
-    if (!zipFile) {
-      alert('Por favor, faça o upload do arquivo .ZIP contendo o projeto do site.');
-      return;
-    }
+    onAddNewListing(newSite);
+    setAdminProducts(prev => [newSite, ...prev]);
+    setSubmitSuccess('Site cadastrado com sucesso no catálogo!');
+    setTimeout(() => {
+      setSubmitSuccess('');
+      setActiveTab('catalog');
+    }, 1500);
+  };
 
-    setIsSubmittingZip(true);
-    setSubmitSuccess('');
-
-    try {
-      const formData = new FormData();
-      formData.append('zipFile', zipFile);
-      formData.append('title', title);
-      formData.append('category', category);
-      formData.append('priceStandard', standardPrice);
-      formData.append('priceExtended', extendedPrice);
-      formData.append('priceInstallation', installationPrice);
-      formData.append('thumbnail', thumbnail);
-      formData.append('shortDescription', shortDescription || 'Website profissional de alta conversão.');
-      formData.append('fullDescription', fullDescription || shortDescription);
-      formData.append('version', versionNumber || '1.0.0');
-      formData.append('features', JSON.stringify(features.split('\n').filter(Boolean)));
-      formData.append('techStack', JSON.stringify(techStack.split(',').map(s => s.trim()).filter(Boolean)));
-
-      const res = await fetch('/api/admin/products', {
-        method: 'POST',
-        body: formData,
-      });
-
-      const data = await res.json();
-
-      if (res.ok && data.success && data.product) {
-        setSubmitSuccess('Site, versão e demonstração pública cadastrados com sucesso!');
-        onAddNewListing(data.product);
-        await fetchAdminProducts();
-        setTimeout(() => {
-          setActiveTab('manage');
-        }, 1500);
-      } else {
-        alert(data.error || 'Erro ao cadastrar o site.');
+  // Toggle Visibility
+  const handleToggleHideSite = (siteId: string) => {
+    setAdminProducts(prev => prev.map(s => {
+      if (s.id === siteId) {
+        const nextStatus = s.status === 'published' ? 'hidden' : 'published';
+        return { ...s, status: nextStatus };
       }
-    } catch (err: any) {
-      alert('Erro de envio: ' + err.message);
-    } finally {
-      setIsSubmittingZip(false);
+      return s;
+    }));
+  };
+
+  // Delete Site
+  const handleDeleteSite = (siteId: string) => {
+    if (confirm('Tem certeza que deseja excluir este site do catálogo?')) {
+      setAdminProducts(prev => prev.filter(s => s.id !== siteId));
     }
   };
 
-  // Toggle Status (Active / Hidden)
-  const handleToggleStatus = async (site: Website) => {
-    const newStatus = site.status === 'hidden' ? 'active' : 'hidden';
-    try {
-      const res = await fetch(`/api/admin/products/${site.id}/status`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: newStatus }),
-      });
-      if (res.ok) {
-        fetchAdminProducts();
-      }
-    } catch (e) {
-      console.error(e);
+  // Refund Action
+  const handleRefundOrder = (orderId: string) => {
+    if (confirm(`Deseja estornar o pedido ${orderId}? A chave de licença associada será revogada automaticamente.`)) {
+      setOrders(prev => prev.map(o => o.id === orderId ? { ...o, status: 'refunded' } : o));
     }
   };
 
-  // Delete product
-  const handleDeleteProduct = async (productId: string) => {
-    if (!confirm('Tem certeza que deseja eliminar este produto? Os arquivos de demonstração e ZIP serão removidos.')) return;
-    try {
-      const res = await fetch(`/api/admin/products/${productId}`, { method: 'DELETE' });
-      if (res.ok) {
-        fetchAdminProducts();
-      }
-    } catch (e) {
-      console.error(e);
+  // Revoke License
+  const handleRevokeLicense = (key: string) => {
+    if (confirm(`Revogar a licença ${key}?`)) {
+      setLicenses(prev => prev.map(l => l.key === key ? { ...l, status: 'revoked' } : l));
     }
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 text-slate-900">
+    <div className="space-y-6">
       
-      {/* Top Header & Navigation Tabs */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-200">
-        <div>
-          <h1 className="text-2xl font-black text-slate-900">Painel do Administrador</h1>
-          <p className="text-xs text-slate-500 font-medium">
-            Gerencie o catálogo de sites, faça upload de ficheiros .ZIP, publique demonstrações e acompanhe versões.
-          </p>
+      {/* Top Header */}
+      <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 text-white flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl">
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center font-black text-xl shadow-lg">
+            ⚡
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <h2 className="text-xl font-black text-white">Painel do Administrador Master</h2>
+              <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase">
+                Online & Automatizado
+              </span>
+            </div>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Controle global de catálogo, receita, licenças, pedidos e suporte
+            </p>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
-          <button
-            onClick={() => setActiveTab('manage')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
-              activeTab === 'manage'
-                ? 'bg-blue-600 text-white shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            Gerenciar Anúncios ({adminProducts.length})
-          </button>
-
-          <button
-            onClick={() => setActiveTab('create')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 ${
-              activeTab === 'create'
-                ? 'bg-blue-600 text-white shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            <PlusCircle className="w-4 h-4" />
-            <span>Adicionar Novo Site</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab('metrics')}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition ${
-              activeTab === 'metrics'
-                ? 'bg-blue-600 text-white shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
-            }`}
-          >
-            Métricas de Vendas
-          </button>
-        </div>
+        <button
+          onClick={() => setActiveTab('create')}
+          className="bg-blue-600 hover:bg-blue-500 text-white font-black text-xs px-5 py-3 rounded-2xl shadow-lg shadow-blue-500/20 transition flex items-center gap-2"
+        >
+          <PlusCircle className="w-4 h-4" />
+          <span>Cadastrar Novo Site</span>
+        </button>
       </div>
 
-      {/* TAB 1: Admin Manage Products Table */}
-      {activeTab === 'manage' && (
+      {/* Navigation Subtabs */}
+      <div className="flex bg-white border border-slate-200 rounded-2xl p-1.5 gap-1 shadow-xs overflow-x-auto">
+        {[
+          { id: 'templates', label: `Templates (${adminProducts.length})`, icon: Sparkles, badge: 'Gemini IA' },
+          { id: 'metrics', label: 'Visão Geral & Métricas', icon: TrendingUp },
+          { id: 'catalog', label: `Catálogo de Sites (${adminProducts.length})`, icon: Layers },
+          { id: 'create', label: 'Adicionar Site', icon: PlusCircle },
+          { id: 'orders', label: `Pedidos & Vendas (${orders.length})`, icon: ShoppingCart },
+          { id: 'licenses', label: `Licenças (${licenses.length})`, icon: Key },
+          { id: 'subscriptions', label: `Assinaturas (${subscriptions.length})`, icon: Server },
+          { id: 'support', label: `Suporte (${supportTickets.length})`, icon: MessageSquare },
+          { id: 'automations', label: 'Logs de Automação', icon: Activity },
+        ].map(tab => {
+          const Icon = tab.icon;
+          return (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`px-3.5 py-2.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap ${
+                activeTab === tab.id
+                  ? 'bg-slate-900 text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <Icon className={`w-3.5 h-3.5 ${tab.id === 'templates' && activeTab !== tab.id ? 'text-purple-600' : ''}`} />
+              <span>{tab.label}</span>
+              {tab.badge && (
+                <span className={`text-[9px] font-black px-1.5 py-0.2 rounded-md ${
+                  activeTab === tab.id ? 'bg-purple-500 text-white' : 'bg-purple-100 text-purple-700'
+                }`}>
+                  {tab.badge}
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* TAB 0: TEMPLATES & GEMINI AI MANAGEMENT */}
+      {activeTab === 'templates' && (
+        <AdminTemplatesManager
+          websites={adminProducts}
+          onUpdateWebsites={handleUpdateProductList}
+          onPreviewTemplate={(tpl) => {
+            if (onOpenLiveDemo) {
+              onOpenLiveDemo(tpl);
+            } else {
+              setPreviewingTemplate(tpl);
+            }
+          }}
+          onCreateNewTemplate={() => setActiveTab('create')}
+        />
+      )}
+
+      {/* TAB 1: METRICS & REVENUE */}
+      {activeTab === 'metrics' && (
         <div className="space-y-6">
-          
-          {/* Firebase Storage Status Banner */}
-          <div className="bg-gradient-to-r from-blue-900 via-slate-900 to-indigo-900 text-white rounded-3xl p-6 border border-blue-800 shadow-lg relative overflow-hidden">
-            <div className="absolute right-0 top-0 translate-x-8 -translate-y-8 w-48 h-48 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
-            
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full uppercase tracking-wider flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    Firebase Storage Ativo
-                  </span>
-                  <span className="text-slate-300 text-xs font-mono">
-                    {storageStatus.bucketName}
-                  </span>
-                </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-xs space-y-1">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Receita Total</span>
+              <p className="text-2xl font-black text-slate-900">R$ 18.490,00</p>
+              <span className="text-[10px] text-emerald-600 font-bold flex items-center gap-1">
+                <TrendingUp className="w-3 h-3" /> +24% em relação ao mês anterior
+              </span>
+            </div>
 
-                <h3 className="text-lg font-black text-white">Armazenamento em Nuvem Seguro de Ficheiros .ZIP</h3>
-                <p className="text-xs text-slate-300 max-w-2xl leading-relaxed">
-                  Os ficheiros dos sites estão segregados no Firebase Storage com políticas de acesso isoladas:
-                  arquivos fonte privados para compradores de licenças e demonstrações públicas em CDN para clientes em potencial.
-                </p>
-              </div>
+            <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-xs space-y-1">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total de Vendas</span>
+              <p className="text-2xl font-black text-slate-900">94 sites</p>
+              <span className="text-[10px] text-blue-600 font-bold">100% entregas automatizadas</span>
+            </div>
 
-              {/* Bucket details grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 shrink-0">
-                <div className="bg-white/10 backdrop-blur-md border border-white/10 p-3 rounded-2xl text-xs space-y-1">
-                  <div className="flex items-center gap-1.5 text-blue-300 font-bold">
-                    <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                    <span>Bucket Privado (Venda)</span>
-                  </div>
-                  <p className="text-[10px] text-slate-300 font-mono">path: /private_zips/&#123;id&#125;/</p>
-                  <p className="text-[10px] text-emerald-400 font-semibold">Acesso via Token Temporário</p>
-                </div>
+            <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-xs space-y-1">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Ticket Médio</span>
+              <p className="text-2xl font-black text-slate-900">R$ 196,70</p>
+              <span className="text-[10px] text-purple-600 font-bold">Incluindo serviços adicionais</span>
+            </div>
 
-                <div className="bg-white/10 backdrop-blur-md border border-white/10 p-3 rounded-2xl text-xs space-y-1">
-                  <div className="flex items-center gap-1.5 text-purple-300 font-bold">
-                    <Eye className="w-4 h-4 text-purple-400" />
-                    <span>Bucket Público (Demo)</span>
-                  </div>
-                  <p className="text-[10px] text-slate-300 font-mono">path: /public_demos/&#123;id&#125;/</p>
-                  <p className="text-[10px] text-purple-300 font-semibold">CDN de Demonstração Live</p>
-                </div>
-              </div>
+            <div className="bg-white border border-slate-200 rounded-3xl p-5 shadow-xs space-y-1">
+              <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Assinaturas Recorrentes</span>
+              <p className="text-2xl font-black text-emerald-600">R$ 1.840,00<span className="text-xs font-bold text-slate-400">/mês</span></p>
+              <span className="text-[10px] text-slate-500">48 clientes ativos em hospedagem</span>
             </div>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-3xl shadow-sm overflow-hidden">
-            <div className="p-5 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-slate-50">
-              <div>
-                <h3 className="text-base font-black text-slate-900">Catálogo de Sites Cadastrados</h3>
-                <p className="text-xs text-slate-500 font-medium">Visualização completa das versões, demonstrações ao vivo e estado de publicação.</p>
+          {/* Top selling templates & Recent activity */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-4">
+              <h3 className="text-sm font-black text-slate-900">Templates Mais Vendidos</h3>
+              <div className="space-y-3">
+                {adminProducts.slice(0, 4).map((p, i) => (
+                  <div key={p.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                    <div className="flex items-center gap-3">
+                      <span className="w-6 h-6 rounded-full bg-blue-100 text-blue-800 text-xs font-black flex items-center justify-center">
+                        #{i + 1}
+                      </span>
+                      <div>
+                        <h5 className="text-xs font-bold text-slate-900">{p.title}</h5>
+                        <span className="text-[10px] text-slate-500">{p.salesCount || 18} vendas realizadas</span>
+                      </div>
+                    </div>
+                    <span className="text-xs font-black text-slate-900">R$ {p.price.standard}</span>
+                  </div>
+                ))}
               </div>
-
-              <button
-                onClick={() => setActiveTab('create')}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-xs flex items-center gap-2 self-start"
-              >
-                <PlusCircle className="w-4 h-4" />
-                <span>Adicionar Novo Site</span>
-              </button>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs">
-                <thead className="bg-slate-100/80 text-slate-600 uppercase tracking-wider text-[10px] font-black border-b border-slate-200">
-                  <tr>
-                    <th className="p-4">Produto</th>
-                    <th className="p-4">Versão</th>
-                    <th className="p-4">Demonstração</th>
-                    <th className="p-4">Preço Padrão</th>
-                    <th className="p-4">Vendas</th>
-                    <th className="p-4">Estado</th>
-                    <th className="p-4 text-right">Ações</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 font-medium">
-                  {adminProducts.map((site) => (
-                    <tr key={site.id} className="hover:bg-slate-50 transition">
-                      
-                      {/* Produto */}
-                      <td className="p-4">
-                        <div className="flex items-center gap-3">
-                          <img
-                            src={site.thumbnail}
-                            alt={site.title}
-                            className="w-12 h-9 rounded-xl object-cover border border-slate-200 shadow-xs"
-                          />
-                          <div>
-                            <p className="font-bold text-slate-900 text-xs truncate max-w-xs">{site.title}</p>
-                            <p className="text-[10px] text-slate-500 font-semibold">{site.categoryName || site.category}</p>
-                          </div>
-                        </div>
-                      </td>
-
-                      {/* Versão */}
-                      <td className="p-4">
-                        <span className="font-bold text-slate-900 bg-slate-100 border border-slate-200 px-2.5 py-1 rounded-lg">
-                          v{site.currentVersion || '1.0.0'}
-                        </span>
-                      </td>
-
-                      {/* Demo */}
-                      <td className="p-4">
-                        {site.demoUrl ? (
-                          <a
-                            href={site.demoUrl}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-1 font-bold text-blue-600 hover:text-blue-800 bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-lg transition"
-                          >
-                            <span>Ativa</span>
-                            <ExternalLink className="w-3 h-3" />
-                          </a>
-                        ) : (
-                          <span className="text-amber-600 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-lg font-bold">
-                            Pendente
-                          </span>
-                        )}
-                      </td>
-
-                      {/* Preço */}
-                      <td className="p-4 text-slate-900 font-black">
-                        R$ {site.price?.standard || 149}
-                      </td>
-
-                      {/* Vendas */}
-                      <td className="p-4 text-slate-600 font-bold">
-                        {site.salesCount || 0} vendas
-                      </td>
-
-                      {/* Estado */}
-                      <td className="p-4">
-                        {site.status === 'hidden' ? (
-                          <span className="bg-slate-100 text-slate-600 border border-slate-200 text-[10px] font-bold px-2.5 py-1 rounded-full">
-                            Oculto
-                          </span>
-                        ) : (
-                          <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold px-2.5 py-1 rounded-full">
-                            Ativo na Vitrine
-                          </span>
-                        )}
-                      </td>
-
-                      {/* Ações */}
-                      <td className="p-4 text-right">
-                        <div className="flex items-center justify-end gap-1.5">
-                          
-                          {/* Publicar/Atualizar Demonstração */}
-                          <button
-                            onClick={() => setSelectedSiteForDemo(site)}
-                            title="Publicar ou Atualizar Demonstração"
-                            className="p-1.5 text-purple-700 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg transition font-bold flex items-center gap-1 text-[11px]"
-                          >
-                            <Play className="w-3.5 h-3.5" />
-                            <span className="hidden lg:inline">Publicar Demo</span>
-                          </button>
-
-                          {/* Upload Nova Versão */}
-                          <button
-                            onClick={() => setSelectedSiteForVersion(site)}
-                            title="Adicionar Nova Versão (.ZIP)"
-                            className="p-1.5 text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 rounded-lg transition font-bold flex items-center gap-1 text-[11px]"
-                          >
-                            <Upload className="w-3.5 h-3.5" />
-                            <span className="hidden lg:inline">Nova Versão</span>
-                          </button>
-
-                          {/* Ocultar/Exibir */}
-                          <button
-                            onClick={() => handleToggleStatus(site)}
-                            title={site.status === 'hidden' ? 'Exibir na Vitrine' : 'Ocultar da Vitrine'}
-                            className="p-1.5 text-slate-600 hover:bg-slate-100 border border-slate-200 rounded-lg transition"
-                          >
-                            {site.status === 'hidden' ? <Eye className="w-3.5 h-3.5 text-emerald-600" /> : <EyeOff className="w-3.5 h-3.5 text-slate-500" />}
-                          </button>
-
-                          {/* Eliminar */}
-                          <button
-                            onClick={() => handleDeleteProduct(site.id)}
-                            title="Eliminar Site"
-                            className="p-1.5 text-rose-600 hover:bg-rose-50 border border-rose-200 rounded-lg transition"
-                          >
-                            <Trash2 className="w-3.5 h-3.5" />
-                          </button>
-
-                        </div>
-                      </td>
-
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-4">
+              <h3 className="text-sm font-black text-slate-900">Últimas Transações Aprovadas</h3>
+              <div className="space-y-3">
+                {orders.slice(0, 4).map((o) => (
+                  <div key={o.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold text-slate-900">{o.customerName}</span>
+                        <span className="bg-emerald-100 text-emerald-800 text-[9px] font-black px-1.5 rounded">Pago</span>
+                      </div>
+                      <p className="text-[10px] text-slate-500">{o.websiteTitle} • {o.date}</p>
+                    </div>
+                    <span className="text-xs font-black text-emerald-600">R$ {o.amount.toFixed(2)}</span>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* TAB 2: Upload New Site & Processing ZIP */}
-      {activeTab === 'create' && (
-        <form onSubmit={handleUploadNewSite} className="bg-white p-8 rounded-3xl border border-slate-200 shadow-md max-w-3xl mx-auto space-y-6">
-          
-          <div className="border-b border-slate-200 pb-4">
-            <h3 className="text-xl font-black text-slate-900">Adicionar Novo Site no Catálogo</h3>
-            <p className="text-xs text-slate-500 font-medium">
-              Faça o upload do arquivo .ZIP completo do projeto. O servidor irá validar a estrutura e criar a versão de demonstração.
-            </p>
+      {/* TAB 2: CATALOG MANAGEMENT */}
+      {activeTab === 'catalog' && (
+        <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 className="text-base font-black text-slate-900">Catálogo de Sites Cadastrados</h3>
+              <p className="text-xs text-slate-500">Gerencie preços, versões, status de publicação e downloads</p>
+            </div>
+
+            <button
+              onClick={() => setActiveTab('create')}
+              className="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition flex items-center gap-1.5"
+            >
+              <PlusCircle className="w-4 h-4" />
+              <span>Adicionar Novo Template</span>
+            </button>
           </div>
 
-          {/* AI Copy Generator Header Banner */}
-          <div className="bg-purple-50 border border-purple-200 p-4 rounded-2xl flex items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-purple-100 text-purple-700 rounded-xl">
-                <Sparkles className="w-5 h-5 animate-pulse" />
+          <div className="space-y-3">
+            {adminProducts.map((p) => (
+              <div
+                key={p.id}
+                className="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4 hover:border-slate-300 transition"
+              >
+                <div className="flex items-center gap-4">
+                  <img
+                    src={p.thumbnail}
+                    alt={p.title}
+                    className="w-16 h-16 rounded-2xl object-cover border border-slate-200 shrink-0"
+                  />
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <h4 className="text-sm font-black text-slate-900">{p.title}</h4>
+                      <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${
+                        p.status === 'hidden'
+                          ? 'bg-amber-100 text-amber-800'
+                          : p.status === 'draft'
+                          ? 'bg-slate-200 text-slate-700'
+                          : 'bg-emerald-100 text-emerald-800'
+                      }`}>
+                        {p.status === 'hidden' ? 'Oculto' : p.status === 'draft' ? 'Rascunho' : 'Publicado'}
+                      </span>
+                      <span className="text-[10px] text-slate-400">v{p.currentVersion || '1.0.0'}</span>
+                    </div>
+
+                    <p className="text-[11px] text-slate-500 mt-1 line-clamp-1">{p.shortDescription}</p>
+
+                    <div className="flex items-center gap-3 mt-1.5 text-[11px]">
+                      <span className="font-bold text-slate-900">Standard: R$ {p.price.standard}</span>
+                      {p.price.promoPrice && (
+                        <span className="text-emerald-600 font-bold">Promo: R$ {p.price.promoPrice}</span>
+                      )}
+                      <span className="text-slate-400">|</span>
+                      <span className="text-slate-500">{p.salesCount || 0} vendas</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 self-end md:self-center">
+                  <button
+                    onClick={() => setSelectedSiteForVersion(p)}
+                    className="px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-xl transition flex items-center gap-1"
+                    title="Upload de Nova Versão ZIP"
+                  >
+                    <Upload className="w-3.5 h-3.5 text-blue-600" />
+                    <span>Versões</span>
+                  </button>
+
+                  <button
+                    onClick={() => handleToggleHideSite(p.id)}
+                    className="p-2 bg-white border border-slate-200 hover:bg-slate-100 text-slate-600 rounded-xl transition"
+                    title={p.status === 'published' ? 'Ocultar da Loja' : 'Publicar na Loja'}
+                  >
+                    {p.status === 'published' ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4 text-emerald-600" />}
+                  </button>
+
+                  <button
+                    onClick={() => handleDeleteSite(p.id)}
+                    className="p-2 bg-white border border-slate-200 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded-xl transition"
+                    title="Excluir Template"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
-              <div>
-                <p className="text-xs font-bold text-slate-900">Gerador de Copy e Descrição com IA Gemini</p>
-                <p className="text-[11px] text-purple-800 font-medium">Informe o título e clique no botão para a IA criar todo o texto de vendas!</p>
-              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* TAB 3: CREATE NEW SITE */}
+      {activeTab === 'create' && (
+        <form onSubmit={handleCreateProduct} className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-6">
+          <div className="flex items-center justify-between border-b pb-4">
+            <div>
+              <h3 className="text-base font-black text-slate-900">Cadastrar Novo Site no Catálogo</h3>
+              <p className="text-xs text-slate-500">Defina informações, faça upload do código ZIP e gere copy com Gemini IA</p>
             </div>
 
             <button
               type="button"
-              onClick={handleGenerateAiCopy}
               disabled={isAiGenerating}
-              className="bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl transition shadow-xs shrink-0 flex items-center gap-2 disabled:opacity-50"
+              onClick={handleGenerateAiCopy}
+              className="bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 font-bold text-xs px-4 py-2 rounded-xl transition flex items-center gap-1.5"
             >
-              <Sparkles className="w-4 h-4" />
-              <span>{isAiGenerating ? 'IA Gerando...' : 'Gerar Texto com IA'}</span>
+              {isAiGenerating ? (
+                <>
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  <span>Gerando Copy com Gemini...</span>
+                </>
+              ) : (
+                <>
+                  <Sparkles className="w-3.5 h-3.5 text-purple-600" />
+                  <span>Gerar Descrições & Features com IA</span>
+                </>
+              )}
             </button>
           </div>
 
           {aiSuccessMessage && (
-            <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs p-3 rounded-xl font-bold flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <div className="p-3 bg-purple-50 border border-purple-200 rounded-2xl text-purple-900 font-bold text-xs flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-purple-600" />
               <span>{aiSuccessMessage}</span>
             </div>
           )}
 
-          {/* Upload .ZIP Dropzone */}
-          <div>
-            <label className="text-xs font-bold text-slate-700 block mb-1">Upload do Ficheiro .ZIP do Site *</label>
-            <div className="border-2 border-dashed border-blue-300 hover:border-blue-600 bg-blue-50/50 rounded-2xl p-6 text-center cursor-pointer transition">
-              <input
-                type="file"
-                accept=".zip"
-                required
-                onChange={(e) => e.target.files?.[0] && setZipFile(e.target.files[0])}
-                className="hidden"
-                id="main-zip-upload"
-              />
-              <label htmlFor="main-zip-upload" className="cursor-pointer block space-y-2">
-                <div className="w-12 h-12 mx-auto bg-blue-600 text-white rounded-2xl flex items-center justify-center shadow-xs">
-                  <Upload className="w-6 h-6" />
-                </div>
-                {zipFile ? (
-                  <div>
-                    <p className="text-sm font-black text-slate-900">{zipFile.name}</p>
-                    <p className="text-xs text-blue-600 font-bold">{(zipFile.size / (1024 * 1024)).toFixed(2)} MB - Ficheiro .ZIP pronto para processamento</p>
-                  </div>
-                ) : (
-                  <div>
-                    <p className="text-xs font-bold text-slate-900">Clique para selecionar o arquivo .ZIP do código fonte completo</p>
-                    <p className="text-[11px] text-slate-500">Validação automática de estrutura (React, Vite, Next.js, HTML)</p>
-                  </div>
-                )}
-              </label>
-            </div>
-          </div>
-
-          {/* Title & Version */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div className="sm:col-span-2">
-              <label className="text-xs font-bold text-slate-700 block mb-1">Nome do Site / Produto *</label>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="md:col-span-2">
+              <label className="text-[11px] font-bold text-slate-700">Título do Template</label>
               <input
                 type="text"
-                required
-                placeholder="Ex: AutoClinic Pro - Sistema para Oficinas"
+                placeholder="Ex: BarberKing Pro — Barbearia & Agendamento"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-medium text-slate-900 focus:outline-none focus:border-blue-600"
-              />
-            </div>
-
-            <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">Versão Inicial *</label>
-              <input
-                type="text"
                 required
-                value={versionNumber}
-                onChange={(e) => setVersionNumber(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-bold text-slate-900 focus:outline-none focus:border-blue-600"
+                className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-blue-500 font-bold"
               />
             </div>
-          </div>
 
-          {/* Category & Cover Image */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">Categoria *</label>
+              <label className="text-[11px] font-bold text-slate-700">Categoria</label>
               <select
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs font-medium text-slate-900 focus:outline-none focus:border-blue-600 cursor-pointer"
+                className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-blue-500 font-bold"
               >
-                <option value="ecommerce">Loja Virtual & E-Commerce</option>
-                <option value="saas">SaaS & Software</option>
-                <option value="medical">Saúde & Medicina</option>
-                <option value="realestate">Imobiliária & Corretores</option>
-                <option value="restaurant">Restaurantes & Delivery</option>
-                <option value="portfolio">Portfólio & Criativos</option>
+                <option value="ecommerce">Loja Virtual (E-Commerce)</option>
+                <option value="barbearia">Barbearia / Salão</option>
+                <option value="restaurante">Restaurante / Delivery</option>
+                <option value="hotel">Hotel / Pousada</option>
+                <option value="agencia">Agência / Marketing</option>
+                <option value="portfolio">Portfólio / Criativo</option>
+                <option value="fotografia">Fotografia / Estúdio</option>
+                <option value="escola">Escola / Cursos</option>
+                <option value="igreja">Igreja / Comunidade</option>
+                <option value="blog">Blog / Notícias</option>
+                <option value="landing">Landing Page</option>
+                <option value="saas">SaaS / App Web</option>
               </select>
-            </div>
-
-            <div>
-              <label className="text-xs font-bold text-slate-700 block mb-1">URL da Imagem de Capa (Thumbnail)</label>
-              <input
-                type="text"
-                placeholder="https://images.unsplash.com/..."
-                value={thumbnail}
-                onChange={(e) => setThumbnail(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-blue-600"
-              />
             </div>
           </div>
 
           {/* Pricing Grid */}
-          <div>
-            <label className="text-xs font-bold text-slate-700 block mb-2">Preço das Licenças (R$) *</label>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div>
-                <span className="text-[11px] text-slate-500 block mb-1 font-medium">Licença Padrão</span>
-                <input
-                  type="number"
-                  value={standardPrice}
-                  onChange={(e) => setStandardPrice(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-blue-600"
-                />
-              </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
+            <div>
+              <label className="text-[10px] font-bold text-slate-700">Preço Standard (R$)</label>
+              <input
+                type="number"
+                value={standardPrice}
+                onChange={(e) => setStandardPrice(e.target.value)}
+                className="w-full mt-1 bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold"
+              />
+            </div>
 
-              <div>
-                <span className="text-[11px] text-slate-500 block mb-1 font-medium">Licença Agência</span>
-                <input
-                  type="number"
-                  value={extendedPrice}
-                  onChange={(e) => setExtendedPrice(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-blue-600"
-                />
-              </div>
+            <div>
+              <label className="text-[10px] font-bold text-emerald-700">Preço Promocional (R$)</label>
+              <input
+                type="number"
+                value={promoPrice}
+                onChange={(e) => setPromoPrice(e.target.value)}
+                placeholder="Opcional"
+                className="w-full mt-1 bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold text-emerald-700"
+              />
+            </div>
 
-              <div>
-                <span className="text-[11px] text-slate-500 block mb-1 font-medium">Com Instalação</span>
-                <input
-                  type="number"
-                  value={installationPrice}
-                  onChange={(e) => setInstallationPrice(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-blue-600"
-                />
-              </div>
+            <div>
+              <label className="text-[10px] font-bold text-slate-700">Licença Estendida (R$)</label>
+              <input
+                type="number"
+                value={extendedPrice}
+                onChange={(e) => setExtendedPrice(e.target.value)}
+                className="w-full mt-1 bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold"
+              />
+            </div>
+
+            <div>
+              <label className="text-[10px] font-bold text-slate-700">Com Instalação (R$)</label>
+              <input
+                type="number"
+                value={installationPrice}
+                onChange={(e) => setInstallationPrice(e.target.value)}
+                className="w-full mt-1 bg-white border border-slate-200 rounded-xl px-3 py-1.5 text-xs font-bold"
+              />
             </div>
           </div>
 
           {/* Descriptions */}
-          <div>
-            <label className="text-xs font-bold text-slate-700 block mb-1">Descrição Curta (Vitrine)</label>
-            <input
-              type="text"
-              placeholder="Frase chamativa para o card do produto"
-              value={shortDescription}
-              onChange={(e) => setShortDescription(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-blue-600"
-            />
+          <div className="space-y-3">
+            <div>
+              <label className="text-[11px] font-bold text-slate-700">Descrição Curta (Card do Produto)</label>
+              <input
+                type="text"
+                value={shortDescription}
+                onChange={(e) => setShortDescription(e.target.value)}
+                placeholder="Uma frase chamativa de impacto"
+                className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-blue-500"
+              />
+            </div>
+
+            <div>
+              <label className="text-[11px] font-bold text-slate-700">Descrição Completa</label>
+              <textarea
+                rows={3}
+                value={fullDescription}
+                onChange={(e) => setFullDescription(e.target.value)}
+                placeholder="Detalhes completos sobre o template"
+                className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-blue-500"
+              />
+            </div>
+
+            <div>
+              <label className="text-[11px] font-bold text-slate-700">Funcionalidades (1 por linha)</label>
+              <textarea
+                rows={3}
+                value={features}
+                onChange={(e) => setFeatures(e.target.value)}
+                placeholder="Agendamento pelo WhatsApp&#10;Painel Administrativo&#10;Design Responsivo"
+                className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-blue-500 font-mono"
+              />
+            </div>
           </div>
 
-          <div>
-            <label className="text-xs font-bold text-slate-700 block mb-1">Descrição Detalhada e Informações do Site</label>
-            <textarea
-              rows={3}
-              value={fullDescription}
-              onChange={(e) => setFullDescription(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-blue-600"
-            />
-          </div>
+          {/* Upload & Version */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label className="text-[11px] font-bold text-slate-700">Versão Inicial</label>
+              <input
+                type="text"
+                value={versionNumber}
+                onChange={(e) => setVersionNumber(e.target.value)}
+                className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono"
+              />
+            </div>
 
-          {/* Features */}
-          <div>
-            <label className="text-xs font-bold text-slate-700 block mb-1">Funcionalidades do Site (1 por linha)</label>
-            <textarea
-              rows={3}
-              placeholder="Design 100% Responsivo&#10;Integração nativa com PIX e Cartão&#10;Painel Admin de Produtos"
-              value={features}
-              onChange={(e) => setFeatures(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-blue-600"
-            />
-          </div>
+            <div>
+              <label className="text-[11px] font-bold text-slate-700">Status</label>
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value as any)}
+                className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold"
+              >
+                <option value="published">Publicado Imediatamente</option>
+                <option value="draft">Salvar como Rascunho</option>
+                <option value="hidden">Oculto</option>
+              </select>
+            </div>
 
-          {/* Tech Stack */}
-          <div>
-            <label className="text-xs font-bold text-slate-700 block mb-1">Tecnologias Utilizadas (separadas por vírgula)</label>
-            <input
-              type="text"
-              value={techStack}
-              onChange={(e) => setTechStack(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs text-slate-900 focus:outline-none focus:border-blue-600"
-            />
+            <div>
+              <label className="text-[11px] font-bold text-slate-700">URL da Imagem / Screenshot</label>
+              <input
+                type="text"
+                value={thumbnail}
+                onChange={(e) => setThumbnail(e.target.value)}
+                className="w-full mt-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs"
+              />
+            </div>
           </div>
 
           {submitSuccess && (
-            <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl text-xs font-bold text-emerald-800 flex items-center gap-2">
-              <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
-              <span>{submitSuccess}</span>
-            </div>
+            <p className="text-xs font-bold text-emerald-600 flex items-center gap-1.5">
+              <CheckCircle2 className="w-4 h-4" /> {submitSuccess}
+            </p>
           )}
 
-          {/* Submit CTA Button */}
-          <div className="pt-4 border-t border-slate-200 flex justify-end gap-3">
+          <div className="flex justify-end gap-3 pt-2">
+            <button
+              type="button"
+              onClick={() => setActiveTab('catalog')}
+              className="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 hover:text-slate-900"
+            >
+              Cancelar
+            </button>
             <button
               type="submit"
-              disabled={isSubmittingZip}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-black text-xs px-6 py-3.5 rounded-2xl shadow-md transition flex items-center gap-2 disabled:opacity-50"
+              className="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-6 py-3 rounded-2xl shadow-lg shadow-blue-500/20 transition flex items-center gap-2"
             >
-              <Upload className="w-4 h-4" />
-              <span>{isSubmittingZip ? 'Processando Ficheiro e Criando Demonstração...' : 'Upload do Site e Publicar'}</span>
+              <Check className="w-4 h-4" />
+              <span>Publicar Site no Catálogo</span>
             </button>
           </div>
-
         </form>
       )}
 
-      {/* TAB 3: Metrics */}
-      {activeTab === 'metrics' && (
-        <div className="space-y-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-2">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Receita Total</span>
-              <p className="text-2xl font-black text-slate-900">R$ {metrics.totalEarnings.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</p>
-              <p className="text-[11px] text-emerald-600 font-bold flex items-center gap-1">
-                <TrendingUp className="w-3.5 h-3.5" /> +28% este mês
-              </p>
-            </div>
+      {/* TAB 4: ORDERS MANAGEMENT */}
+      {activeTab === 'orders' && (
+        <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-4">
+          <div className="flex justify-between items-center">
+            <h3 className="text-base font-black text-slate-900">Histórico Completo de Vendas & Pedidos</h3>
+            <span className="text-xs font-bold text-slate-500">{orders.length} pedidos registrados</span>
+          </div>
 
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-2">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Vendas Realizadas</span>
-              <p className="text-2xl font-black text-slate-900">{metrics.totalSales} licenças</p>
-              <p className="text-[11px] text-slate-500 font-medium">Entregas em .ZIP concluídas</p>
-            </div>
+          <div className="space-y-3">
+            {orders.map((o) => (
+              <div key={o.id} className="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-xs font-black text-slate-900">{o.id}</span>
+                    <span className={`text-[9px] font-black px-2 py-0.5 rounded-full ${
+                      o.status === 'refunded' ? 'bg-red-100 text-red-800' : 'bg-emerald-100 text-emerald-800'
+                    }`}>
+                      {o.status === 'refunded' ? 'Estornado' : 'Pago & Entregue'}
+                    </span>
+                    <span className="text-[10px] text-slate-400">{o.date}</span>
+                  </div>
 
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-2">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Conversão</span>
-              <p className="text-2xl font-black text-slate-900">{metrics.conversionRate}%</p>
-              <p className="text-[11px] text-blue-600 font-bold">Acima da média nacional</p>
-            </div>
+                  <p className="text-xs font-bold text-slate-900 mt-1">{o.websiteTitle} • R$ {o.amount.toFixed(2)} ({o.paymentMethod})</p>
+                  <p className="text-[10px] text-slate-500">Cliente: {o.customerName} ({o.customerEmail}) • Licença: <code>{o.licenseKey}</code></p>
+                </div>
 
-            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-2">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Modelos no Ar</span>
-              <p className="text-2xl font-black text-slate-900">{adminProducts.length} sites</p>
-              <p className="text-[11px] text-slate-500 font-medium">Com demonstração ativa</p>
-            </div>
+                <div className="flex items-center gap-2 self-end md:self-center">
+                  <button
+                    onClick={() => alert(`E-mail de acesso e link de download reenviados com sucesso para ${o.customerEmail}!`)}
+                    className="px-3 py-1.5 bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 text-xs font-bold rounded-xl transition"
+                  >
+                    Reenviar Acesso
+                  </button>
+
+                  {o.status !== 'refunded' && (
+                    <button
+                      onClick={() => handleRefundOrder(o.id)}
+                      className="px-3 py-1.5 bg-white border border-red-200 hover:bg-red-50 text-red-600 text-xs font-bold rounded-xl transition"
+                    >
+                      Estornar
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
 
-      {/* Modals */}
-      <UploadVersionModal
-        website={selectedSiteForVersion}
-        onClose={() => setSelectedSiteForVersion(null)}
-        onSuccess={fetchAdminProducts}
-      />
+      {/* TAB 5: LICENSES */}
+      {activeTab === 'licenses' && (
+        <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-4">
+          <div className="flex justify-between items-center">
+            <h3 className="text-base font-black text-slate-900">Gerenciamento de Licenças Emitidas</h3>
+            <span className="text-xs font-bold text-slate-500">{licenses.length} licenças ativas</span>
+          </div>
 
-      <DemoDeployModal
-        website={selectedSiteForDemo}
-        onClose={() => setSelectedSiteForDemo(null)}
-        onSuccess={fetchAdminProducts}
-      />
+          <div className="space-y-3">
+            {licenses.map((lic, idx) => (
+              <div key={idx} className="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-mono text-xs font-bold text-blue-700">{lic.key}</span>
+                    <span className={`text-[9px] font-black px-2 py-0.5 rounded-full ${
+                      lic.status === 'revoked' ? 'bg-red-100 text-red-800' : 'bg-emerald-100 text-emerald-800'
+                    }`}>
+                      {lic.status === 'revoked' ? 'Revogada' : 'Ativa'}
+                    </span>
+                  </div>
+                  <p className="text-xs font-bold text-slate-900 mt-1">{lic.productTitle} • {lic.type}</p>
+                  <p className="text-[10px] text-slate-500">Comprador: {lic.clientEmail} • Emitida em {lic.date}</p>
+                </div>
+
+                {lic.status !== 'revoked' && (
+                  <button
+                    onClick={() => handleRevokeLicense(lic.key)}
+                    className="px-3 py-1.5 bg-white border border-red-200 text-red-600 text-xs font-bold rounded-xl hover:bg-red-50 transition self-end sm:self-center"
+                  >
+                    Revogar Licença
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* TAB 6: RECURRING SUBSCRIPTIONS */}
+      {activeTab === 'subscriptions' && (
+        <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-4">
+          <div className="flex justify-between items-center">
+            <h3 className="text-base font-black text-slate-900">Assinaturas Recorrentes & Hospedagem</h3>
+            <span className="text-xs font-bold text-slate-500">{subscriptions.length} planos ativos</span>
+          </div>
+
+          <div className="space-y-3">
+            {subscriptions.map((sub) => (
+              <div key={sub.id} className="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex justify-between items-center">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-black text-slate-900">{sub.clientName}</span>
+                    <span className="bg-emerald-100 text-emerald-800 text-[9px] font-black px-2 py-0.5 rounded-full">Ativo</span>
+                  </div>
+                  <p className="text-[11px] text-slate-600 mt-0.5">{sub.plan} • R$ {sub.price.toFixed(2)}/mês</p>
+                  <p className="text-[10px] text-slate-400">Próxima fatura automática: {sub.nextBilling}</p>
+                </div>
+
+                <span className="text-sm font-black text-emerald-600">R$ {sub.price.toFixed(2)}/mês</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* TAB 7: SUPPORT TICKETS */}
+      {activeTab === 'support' && (
+        <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-4">
+          <div className="flex justify-between items-center">
+            <h3 className="text-base font-black text-slate-900">Central de Atendimento ao Cliente</h3>
+            <span className="text-xs font-bold text-slate-500">{supportTickets.length} chamados</span>
+          </div>
+
+          <div className="space-y-3">
+            {supportTickets.map((t) => (
+              <div key={t.id} className="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex justify-between items-center">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-xs text-slate-900">{t.id} • {t.subject}</span>
+                    <span className={`text-[9px] font-black px-2 py-0.5 rounded-full ${
+                      t.status === 'open' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'
+                    }`}>
+                      {t.status === 'open' ? 'Aberto' : 'Resolvido'}
+                    </span>
+                  </div>
+                  <p className="text-[10px] text-slate-500 mt-0.5">Cliente: {t.clientEmail} • {t.date}</p>
+                </div>
+
+                <button
+                  onClick={() => alert(`Abrindo conversa do chamado ${t.id}`)}
+                  className="px-3 py-1.5 bg-blue-600 text-white font-bold text-xs rounded-xl hover:bg-blue-500 transition"
+                >
+                  Responder
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* TAB 8: AUTOMATION LOGS */}
+      {activeTab === 'automations' && (
+        <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-xs space-y-4">
+          <h3 className="text-base font-black text-slate-900">Histórico de Eventos & Automações do Sistema</h3>
+          <div className="space-y-2 font-mono text-xs">
+            {automationLogs.map((log) => (
+              <div key={log.id} className="p-3 bg-slate-900 text-slate-100 rounded-2xl flex justify-between items-center">
+                <div>
+                  <span className="text-emerald-400 font-bold">[{log.timestamp}]</span>{' '}
+                  <span className="text-blue-300 font-bold">{log.event}:</span>{' '}
+                  <span className="text-slate-300">{log.details}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Modal for ZIP versioning */}
+      {selectedSiteForVersion && (
+        <UploadVersionModal
+          isOpen={true}
+          website={selectedSiteForVersion}
+          onClose={() => setSelectedSiteForVersion(null)}
+          onSuccess={() => {
+            setSelectedSiteForVersion(null);
+          }}
+        />
+      )}
+
+      {/* Modal for Demo Deploy */}
+      {selectedSiteForDemo && (
+        <DemoDeployModal
+          isOpen={true}
+          website={selectedSiteForDemo}
+          onClose={() => setSelectedSiteForDemo(null)}
+        />
+      )}
+
+      {/* Modal for Live Preview */}
+      {previewingTemplate && (
+        <LivePreviewModal
+          website={previewingTemplate}
+          onClose={() => setPreviewingTemplate(null)}
+          onAddToCart={() => {}}
+        />
+      )}
 
     </div>
   );

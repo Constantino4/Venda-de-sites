@@ -1,6 +1,22 @@
 import React, { useState } from 'react';
 import { Website, CustomizerConfig } from '../types';
-import { Monitor, Tablet, Smartphone, X, Sparkles, ShoppingBag, Palette, Moon, Sun, Check } from 'lucide-react';
+import { 
+  Monitor, 
+  Tablet, 
+  Smartphone, 
+  X, 
+  Sparkles, 
+  ShoppingBag, 
+  Moon, 
+  Sun, 
+  Sliders, 
+  RotateCcw,
+  ShieldCheck,
+  Layers,
+  Phone
+} from 'lucide-react';
+import { TemplateMasterRouter } from './templates/TemplateMasterRouter';
+import { THEME_PRESETS, ThemeColors } from './templates/TemplateShared';
 
 interface LivePreviewModalProps {
   website: Website | null;
@@ -13,70 +29,89 @@ export const LivePreviewModal: React.FC<LivePreviewModalProps> = ({
   onClose,
   onAddToCart,
 }) => {
-  if (!website) return null;
-
   const [customizer, setCustomizer] = useState<CustomizerConfig>({
-    accentColor: 'emerald',
-    isDark: true,
-    businessName: website.title.split('-')[0].trim(),
-    businessTagline: website.shortDescription,
+    accentColor: 'indigo',
+    isDark: false,
+    businessName: website ? website.title.split('—')[0].split('-')[0].trim() : 'Meu Negócio',
+    businessTagline: website ? website.shortDescription : 'Descrição do negócio',
     viewport: 'desktop',
   });
 
-  const [showCustomizerPanel, setShowCustomizerPanel] = useState(true);
+  const [showCustomizerDrawer, setShowCustomizerDrawer] = useState(true);
+  const [customPhone, setCustomPhone] = useState('(11) 98765-4321');
+  const [customCta, setCustomCta] = useState('Entrar em Contato');
 
-  // Map theme colors
-  const ACCENT_CLASSES: Record<string, { bg: string; text: string; border: string; button: string }> = {
-    emerald: { bg: 'bg-emerald-500', text: 'text-emerald-400', border: 'border-emerald-500', button: 'bg-emerald-500 hover:bg-emerald-600 text-slate-950' },
-    indigo: { bg: 'bg-indigo-500', text: 'text-indigo-400', border: 'border-indigo-500', button: 'bg-indigo-500 hover:bg-indigo-600 text-white' },
-    rose: { bg: 'bg-rose-500', text: 'text-rose-400', border: 'border-rose-500', button: 'bg-rose-500 hover:bg-rose-600 text-white' },
-    amber: { bg: 'bg-amber-500', text: 'text-amber-400', border: 'border-amber-500', button: 'bg-amber-500 hover:bg-amber-600 text-slate-950' },
-    cyan: { bg: 'bg-cyan-500', text: 'text-cyan-400', border: 'border-cyan-500', button: 'bg-cyan-500 hover:bg-cyan-600 text-slate-950' },
-    purple: { bg: 'bg-purple-500', text: 'text-purple-400', border: 'border-purple-500', button: 'bg-purple-500 hover:bg-purple-600 text-white' },
-  };
+  // Keep customizer synced when website changes
+  React.useEffect(() => {
+    if (website) {
+      setCustomizer((c) => ({
+        ...c,
+        businessName: website.title.split('—')[0].split('-')[0].trim(),
+        businessTagline: website.shortDescription,
+      }));
+    }
+  }, [website]);
 
-  const currentTheme = ACCENT_CLASSES[customizer.accentColor];
+  if (!website) return null;
 
-  // Get viewport max-width style
-  const getViewportWidth = () => {
+  // Accent color themes definition
+  const ACCENT_COLORS: { id: string; name: string; hex: string; theme: ThemeColors }[] = [
+    { id: 'indigo', name: 'Azul Indigo', hex: '#4f46e5', theme: THEME_PRESETS.indigo },
+    { id: 'emerald', name: 'Verde Esmeralda', hex: '#059669', theme: THEME_PRESETS.emerald },
+    { id: 'rose', name: 'Vermelho Ruby', hex: '#e11d48', theme: THEME_PRESETS.rose },
+    { id: 'amber', name: 'Dourado Âmbar', hex: '#d97706', theme: THEME_PRESETS.amber },
+    { id: 'purple', name: 'Roxo Violeta', hex: '#7c3aed', theme: THEME_PRESETS.purple },
+    { id: 'cyan', name: 'Azul Turquesa', hex: '#0891b2', theme: THEME_PRESETS.cyan },
+  ];
+
+  const currentThemeObj = ACCENT_COLORS.find(c => c.id === customizer.accentColor) || ACCENT_COLORS[0];
+  const currentTheme = currentThemeObj.theme;
+
+  // Viewport container width
+  const getViewportContainerClass = () => {
     switch (customizer.viewport) {
       case 'mobile':
-        return 'max-w-[375px] h-[667px] my-auto border-x-8 border-y-[16px] border-slate-800 rounded-[36px] shadow-2xl';
+        return 'w-[380px] h-[720px] my-auto border-8 border-slate-800 rounded-[40px] shadow-2xl overflow-hidden relative transition-all duration-300 bg-white';
       case 'tablet':
-        return 'max-w-[768px] h-[800px] my-auto border-8 border-slate-800 rounded-[28px] shadow-2xl';
+        return 'w-[740px] h-[800px] my-auto border-8 border-slate-800 rounded-[32px] shadow-2xl overflow-hidden relative transition-all duration-300 bg-white';
       default:
-        return 'w-full h-full rounded-b-xl';
+        return 'w-full h-full rounded-2xl shadow-xl overflow-hidden relative transition-all duration-300 bg-white';
     }
   };
 
   return (
     <div className="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md flex flex-col">
       
-      {/* Top Modal Navigation Control Bar */}
-      <div className="bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between gap-4 text-slate-900">
+      {/* Top Modal Navigation Bar */}
+      <div className="bg-slate-900 border-b border-slate-800 px-4 py-2.5 flex items-center justify-between gap-3 text-white">
         
         {/* Left Info */}
         <div className="flex items-center gap-3">
-          <span className="bg-blue-50 text-blue-700 border border-blue-200 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
-            Demo Interativa
+          <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-black px-2.5 py-1 rounded-full uppercase tracking-wider flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            Preview Interativo Multi-Páginas
           </span>
-          <h2 className="text-sm sm:text-base font-black text-slate-900 truncate max-w-xs sm:max-w-md">
+          <span className="bg-blue-500/20 text-blue-300 border border-blue-500/30 text-[10px] font-black px-2 py-0.5 rounded-full flex items-center gap-1">
+            <Layers className="w-3 h-3" />
+            {website.pageCount || 6} páginas funcionais
+          </span>
+          <h2 className="text-xs sm:text-sm font-black text-white truncate max-w-xs sm:max-w-md hidden md:block">
             {website.title}
           </h2>
         </div>
 
-        {/* Middle Viewport Controls */}
-        <div className="hidden md:flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
+        {/* Viewport Switcher */}
+        <div className="flex items-center bg-slate-800 p-1 rounded-xl border border-slate-700">
           <button
             onClick={() => setCustomizer((c) => ({ ...c, viewport: 'desktop' }))}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
               customizer.viewport === 'desktop'
                 ? 'bg-blue-600 text-white shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
+                : 'text-slate-400 hover:text-white'
             }`}
           >
             <Monitor className="w-3.5 h-3.5" />
-            <span>Desktop</span>
+            <span className="hidden sm:inline">Desktop</span>
           </button>
 
           <button
@@ -84,11 +119,11 @@ export const LivePreviewModal: React.FC<LivePreviewModalProps> = ({
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
               customizer.viewport === 'tablet'
                 ? 'bg-blue-600 text-white shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
+                : 'text-slate-400 hover:text-white'
             }`}
           >
             <Tablet className="w-3.5 h-3.5" />
-            <span>Tablet</span>
+            <span className="hidden sm:inline">Tablet</span>
           </button>
 
           <button
@@ -96,22 +131,26 @@ export const LivePreviewModal: React.FC<LivePreviewModalProps> = ({
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
               customizer.viewport === 'mobile'
                 ? 'bg-blue-600 text-white shadow-xs'
-                : 'text-slate-600 hover:text-slate-900'
+                : 'text-slate-400 hover:text-white'
             }`}
           >
             <Smartphone className="w-3.5 h-3.5" />
-            <span>Mobile</span>
+            <span className="hidden sm:inline">Mobile</span>
           </button>
         </div>
 
         {/* Right CTA Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <button
-            onClick={() => setShowCustomizerPanel(!showCustomizerPanel)}
-            className="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 transition"
+            onClick={() => setShowCustomizerDrawer(!showCustomizerDrawer)}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition flex items-center gap-1.5 ${
+              showCustomizerDrawer
+                ? 'bg-purple-600 border-purple-500 text-white'
+                : 'border-slate-700 text-slate-300 hover:bg-slate-800'
+            }`}
           >
-            <Palette className="w-4 h-4 text-blue-600" />
-            <span className="hidden sm:inline">Customizar Cores</span>
+            <Sliders className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Personalizar Cores & Textos</span>
           </button>
 
           <button
@@ -119,7 +158,7 @@ export const LivePreviewModal: React.FC<LivePreviewModalProps> = ({
               onAddToCart(website);
               onClose();
             }}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-black text-xs px-4 py-2 rounded-xl shadow-md shadow-blue-500/10 transition flex items-center gap-1.5"
+            className="bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs px-4 py-2 rounded-xl shadow-md shadow-emerald-500/20 transition flex items-center gap-1.5"
           >
             <ShoppingBag className="w-4 h-4" />
             <span>Comprar R$ {website.price.standard}</span>
@@ -127,169 +166,164 @@ export const LivePreviewModal: React.FC<LivePreviewModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition"
+            className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
       </div>
 
-      {/* Main Interactive Stage & Floating Customizer Drawer */}
-      <div className="flex-1 relative flex items-center justify-center p-4 bg-slate-950 overflow-auto">
+      {/* Main Interactive Stage & Side Panel */}
+      <div className="flex-1 relative flex overflow-hidden">
         
-        {/* Customizer Drawer Panel */}
-        {showCustomizerPanel && (
-          <div className="absolute top-4 left-4 z-20 bg-slate-900/90 backdrop-blur-md border border-slate-800 rounded-2xl p-4 shadow-2xl w-72 space-y-4 text-white">
+        {/* Customizer Sidebar (Live Controls) */}
+        {showCustomizerDrawer && (
+          <aside className="w-80 bg-slate-900 border-r border-slate-800 p-4 text-white overflow-y-auto space-y-4 shrink-0 shadow-2xl">
             <div className="flex items-center justify-between pb-2 border-b border-slate-800">
-              <div className="flex items-center gap-2 font-bold text-xs text-emerald-400">
-                <Sparkles className="w-4 h-4" />
-                <span>Personalize em Tempo Real</span>
-              </div>
+              <span className="text-xs font-black flex items-center gap-1.5 text-purple-400">
+                <Sparkles className="w-3.5 h-3.5" />
+                Personalização ao Vivo
+              </span>
               <button
-                onClick={() => setShowCustomizerPanel(false)}
-                className="text-slate-400 hover:text-white text-xs"
+                onClick={() => setCustomizer({
+                  accentColor: 'indigo',
+                  isDark: false,
+                  businessName: website.title.split('—')[0].split('-')[0].trim(),
+                  businessTagline: website.shortDescription,
+                  viewport: customizer.viewport,
+                })}
+                className="text-[10px] text-slate-400 hover:text-white flex items-center gap-1"
               >
-                <X className="w-4 h-4" />
+                <RotateCcw className="w-3 h-3" />
+                <span>Restaurar</span>
               </button>
             </div>
 
-            {/* Business Title live edit */}
-            <div>
-              <label className="text-[11px] font-semibold text-slate-400 block mb-1">
-                Nome da sua Empresa
-              </label>
+            {/* Business Name Field */}
+            <div className="space-y-1.5">
+              <label className="text-[11px] font-bold text-slate-300">Nome da Empresa / Marca:</label>
               <input
                 type="text"
                 value={customizer.businessName}
-                onChange={(e) =>
-                  setCustomizer((c) => ({ ...c, businessName: e.target.value }))
-                }
-                className="w-full bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-emerald-500"
+                onChange={(e) => setCustomizer((c) => ({ ...c, businessName: e.target.value }))}
+                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-purple-500"
               />
             </div>
 
-            {/* Accent Color picker */}
-            <div>
-              <label className="text-[11px] font-semibold text-slate-400 block mb-2">
-                Cor de Destaque da Marca
-              </label>
-              <div className="flex items-center gap-2">
-                {(['emerald', 'indigo', 'rose', 'amber', 'cyan', 'purple'] as const).map(
-                  (color) => (
-                    <button
-                      key={color}
-                      onClick={() => setCustomizer((c) => ({ ...c, accentColor: color }))}
-                      className={`w-7 h-7 rounded-full flex items-center justify-center transition ${
-                        ACCENT_CLASSES[color].bg
-                      } ${customizer.accentColor === color ? 'ring-2 ring-white scale-110' : 'opacity-80 hover:opacity-100'}`}
-                    >
-                      {customizer.accentColor === color && (
-                        <Check className="w-3.5 h-3.5 text-slate-950 font-bold" />
-                      )}
-                    </button>
-                  )
-                )}
+            {/* Custom Phone / WhatsApp */}
+            <div className="space-y-1.5">
+              <label className="text-[11px] font-bold text-slate-300">WhatsApp / Telefone de Contato:</label>
+              <div className="relative">
+                <Phone className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+                <input
+                  type="text"
+                  value={customPhone}
+                  onChange={(e) => setCustomPhone(e.target.value)}
+                  className="w-full bg-slate-800 border border-slate-700 rounded-xl pl-9 pr-3 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-purple-500"
+                />
+              </div>
+            </div>
+
+            {/* Color Palette Selector */}
+            <div className="space-y-2">
+              <label className="text-[11px] font-bold text-slate-300">Paleta de Cores:</label>
+              <div className="grid grid-cols-3 gap-2">
+                {ACCENT_COLORS.map((c) => (
+                  <button
+                    key={c.id}
+                    onClick={() => setCustomizer((prev) => ({ ...prev, accentColor: c.id as any }))}
+                    className={`p-2 rounded-xl border text-[10px] font-bold transition flex items-center gap-1.5 ${
+                      customizer.accentColor === c.id
+                        ? 'bg-slate-800 border-purple-500 text-white shadow-xs'
+                        : 'border-slate-800 text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    <span className="w-3.5 h-3.5 rounded-full shrink-0" style={{ backgroundColor: c.hex }} />
+                    <span className="truncate">{c.name.split(' ')[0]}</span>
+                  </button>
+                ))}
               </div>
             </div>
 
             {/* Light / Dark Mode Toggle */}
-            <div className="flex items-center justify-between pt-2 border-t border-slate-800">
-              <span className="text-xs font-medium text-slate-300">Modo Escuro / Claro</span>
-              <button
-                onClick={() => setCustomizer((c) => ({ ...c, isDark: !c.isDark }))}
-                className="p-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-200 transition"
-              >
-                {customizer.isDark ? (
-                  <Moon className="w-4 h-4 text-indigo-400" />
-                ) : (
-                  <Sun className="w-4 h-4 text-amber-400" />
-                )}
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Simulated Website Render inside Device Frame */}
-        <div
-          className={`mx-auto transition-all duration-300 overflow-hidden flex flex-col ${getViewportWidth()} ${
-            customizer.isDark ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900'
-          }`}
-        >
-          {/* Simulated Site Header */}
-          <nav
-            className={`px-6 py-4 flex items-center justify-between border-b ${
-              customizer.isDark ? 'border-slate-800/80 bg-slate-900/90' : 'border-slate-200 bg-white/90'
-            }`}
-          >
-            <span className={`text-lg font-black tracking-tight ${currentTheme.text}`}>
-              {customizer.businessName || 'Sua Marca'}
-            </span>
-            <div className="flex items-center gap-4 text-xs font-medium">
-              <span className="cursor-pointer hover:underline opacity-80">Início</span>
-              <span className="cursor-pointer hover:underline opacity-80">Serviços</span>
-              <span className="cursor-pointer hover:underline opacity-80">Sobre</span>
-              <button className={`px-3 py-1.5 rounded-lg font-bold text-xs ${currentTheme.button}`}>
-                Contato
-              </button>
-            </div>
-          </nav>
-
-          {/* Simulated Hero Section */}
-          <div className="p-8 sm:p-12 text-center my-auto max-w-2xl mx-auto space-y-6">
-            <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold ${currentTheme.bg} text-slate-950`}>
-              {website.categoryName}
-            </span>
-
-            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight">
-              {customizer.businessName}: Soluções Inteligentes para seu Negócio
-            </h1>
-
-            <p className="text-xs sm:text-sm opacity-80 leading-relaxed">
-              {customizer.businessTagline}
-            </p>
-
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
-              <button className={`px-6 py-3 rounded-xl font-extrabold text-sm shadow-lg transition ${currentTheme.button}`}>
-                Começar Agora
-              </button>
-              <button
-                className={`px-5 py-3 rounded-xl font-semibold text-sm border transition ${
-                  customizer.isDark
-                    ? 'border-slate-700 hover:bg-slate-800'
-                    : 'border-slate-300 hover:bg-slate-100'
-                }`}
-              >
-                Saber Mais
-              </button>
-            </div>
-
-            {/* Features preview list */}
-            <div className="grid grid-cols-2 gap-3 pt-8 text-left text-xs">
-              {website.features.slice(0, 4).map((feat, i) => (
-                <div
-                  key={i}
-                  className={`p-3 rounded-xl border ${
-                    customizer.isDark ? 'bg-slate-900/60 border-slate-800' : 'bg-white border-slate-200'
+            <div className="space-y-1.5">
+              <label className="text-[11px] font-bold text-slate-300">Modo de Exibição:</label>
+              <div className="grid grid-cols-2 gap-2">
+                <button
+                  onClick={() => setCustomizer((c) => ({ ...c, isDark: false }))}
+                  className={`py-2 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition ${
+                    !customizer.isDark
+                      ? 'bg-white text-slate-950 border-white shadow-xs'
+                      : 'border-slate-800 text-slate-400 hover:text-white'
                   }`}
                 >
-                  <p className="font-bold text-xs mb-1">✓ {feat}</p>
-                  <p className="opacity-70 text-[10px]">Otimizado e pronto para produção</p>
+                  <Sun className="w-3.5 h-3.5" />
+                  <span>Modo Claro</span>
+                </button>
+
+                <button
+                  onClick={() => setCustomizer((c) => ({ ...c, isDark: true }))}
+                  className={`py-2 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition ${
+                    customizer.isDark
+                      ? 'bg-purple-600 text-white border-purple-500 shadow-xs'
+                      : 'border-slate-800 text-slate-400 hover:text-white'
+                  }`}
+                >
+                  <Moon className="w-3.5 h-3.5" />
+                  <span>Modo Escuro</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Template Pages List */}
+            {website.pages && website.pages.length > 0 && (
+              <div className="space-y-2 pt-2 border-t border-slate-800">
+                <label className="text-[11px] font-bold text-slate-300 flex items-center gap-1.5">
+                  <Layers className="w-3.5 h-3.5 text-blue-400" />
+                  Páginas Inclusas no Template ({website.pages.length}):
+                </label>
+                <div className="flex flex-wrap gap-1.5">
+                  {website.pages.map((p) => (
+                    <span key={p} className="text-[10px] font-bold px-2.5 py-1 rounded-lg bg-slate-800 border border-slate-700 text-slate-300">
+                      {p}
+                    </span>
+                  ))}
                 </div>
-              ))}
+              </div>
+            )}
+
+            {/* Guarantee badge */}
+            <div className="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-3.5 text-xs text-slate-300 space-y-1.5">
+              <p className="font-bold text-white flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                Garantia de Satisfação
+              </p>
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                Ao comprar, você receberá o código-fonte 100% aberto com todas as alterações aplicadas automaticamente.
+              </p>
+            </div>
+          </aside>
+        )}
+
+        {/* Live Stage Display */}
+        <div className="flex-1 relative flex items-center justify-center p-2 sm:p-6 bg-slate-950 overflow-auto">
+          <div className={getViewportContainerClass()}>
+            <div className="w-full h-full overflow-y-auto">
+              <TemplateMasterRouter
+                website={website}
+                isDark={customizer.isDark}
+                theme={currentTheme}
+                businessName={customizer.businessName}
+                customPhone={customPhone}
+                customCta={customCta}
+              />
             </div>
           </div>
-
-          {/* Simulated Footer */}
-          <footer
-            className={`px-6 py-3 text-center text-[11px] opacity-60 border-t ${
-              customizer.isDark ? 'border-slate-800 bg-slate-900' : 'border-slate-200 bg-slate-100'
-            }`}
-          >
-            © 2026 {customizer.businessName}. Todos os direitos reservados.
-          </footer>
         </div>
 
       </div>
+
     </div>
   );
 };
+

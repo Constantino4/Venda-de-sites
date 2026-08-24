@@ -1,5 +1,15 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
+import { 
+  getAuth, 
+  GoogleAuthProvider, 
+  GithubAuthProvider, 
+  signInWithPopup, 
+  signInWithRedirect, 
+  signOut, 
+  onAuthStateChanged,
+  type User,
+  type AuthError
+} from 'firebase/auth';
 import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
 import { 
   getStorage, 
@@ -11,20 +21,44 @@ import {
 } from 'firebase/storage';
 import firebaseConfig from '../../firebase-applet-config.json';
 
-// Initialize Firebase App
+// Initialize Firebase App (Singleton Pattern)
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 
-// Export Firestore with firestoreDatabaseId (Critical as per skill guidelines)
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+// Export Firestore with databaseId support
+export const db = (firebaseConfig.firestoreDatabaseId && firebaseConfig.firestoreDatabaseId !== '(default)') 
+  ? getFirestore(app, firebaseConfig.firestoreDatabaseId) 
+  : getFirestore(app);
 
 // Export Auth
 export const auth = getAuth(app);
+auth.useDeviceLanguage();
+
+// Current application base URL and authorized callback handlers
+export const APP_AUTH_CONFIG = {
+  authDomain: firebaseConfig.authDomain || 'studio-9909916558-6949c.firebaseapp.com',
+  callbackUrl: `https://${firebaseConfig.authDomain || 'studio-9909916558-6949c.firebaseapp.com'}/__/auth/handler`,
+  productionAppUrl: 'https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app',
+  devAppUrl: 'https://ais-dev-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app'
+};
+
+// Configure Auth Providers
+export const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
+  prompt: 'select_account'
+});
+
+export const githubProvider = new GithubAuthProvider();
+githubProvider.addScope('read:user');
+githubProvider.addScope('user:email');
+githubProvider.setCustomParameters({
+  allow_signup: 'true'
+});
 
 // Export Storage
 export const storage = getStorage(app);
 
 // Storage Bucket configuration details
-export const STORAGE_BUCKET_NAME = firebaseConfig.storageBucket || 'boreal-protocol-rxctm.firebasestorage.app';
+export const STORAGE_BUCKET_NAME = firebaseConfig.storageBucket || 'studio-9909916558-6949c.firebasestorage.app';
 export const PRIVATE_ZIPS_PREFIX = 'private_zips';
 export const PUBLIC_DEMOS_PREFIX = 'public_demos';
 
