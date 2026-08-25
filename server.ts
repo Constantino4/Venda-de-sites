@@ -3627,20 +3627,80 @@ app.post("/api/admin/seo-apply", (req, res) => {
 });
 
 
+// ==================== GOOGLE SEARCH CONSOLE DYNAMIC INJECTION ==================== //
+
+export const GOOGLE_VERIFICATION_TAG = '<meta name="google-site-verification" content="VwVDZJazzncyXil4--N35_Uug_LCykj3wHDEclxbMh4" />';
+
+/**
+ * Server-side function that dynamically injects or ensures the Google Search Console
+ * verification meta tag is present in the rendered HTML output.
+ */
+export function injectGoogleVerificationTag(html: string): string {
+  if (!html || typeof html !== "string") return html;
+
+  // 1. If exact tag is already present, ensure it's returned cleanly
+  if (html.includes('name="google-site-verification"') && html.includes('VwVDZJazzncyXil4--N35_Uug_LCykj3wHDEclxbMh4')) {
+    return html;
+  }
+
+  // 2. If an outdated google-site-verification tag is present, replace it with the new content
+  if (/<meta\s+[^>]*name=["']google-site-verification["'][^>]*>/i.test(html)) {
+    return html.replace(/<meta\s+[^>]*name=["']google-site-verification["'][^>]*>/i, GOOGLE_VERIFICATION_TAG);
+  }
+
+  // 3. Inject directly into <head>
+  if (/<head[^>]*>/i.test(html)) {
+    return html.replace(/(<head[^>]*>)/i, `$1\n    ${GOOGLE_VERIFICATION_TAG}`);
+  } else if (/<\/head>/i.test(html)) {
+    return html.replace(/<\/head>/i, `    ${GOOGLE_VERIFICATION_TAG}\n  </head>`);
+  }
+
+  // 4. Fallback if <head> tag is not present
+  return `${GOOGLE_VERIFICATION_TAG}\n${html}`;
+}
+
 // ==================== VITE & SERVER BOOT ==================== //
 
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { middlewareMode: true },
-      appType: "spa",
+      appType: "custom",
     });
     app.use(vite.middlewares);
+
+    // Dynamic Server-Side HTML Rendering & Meta Tag Injection Handler (Development Mode)
+    app.use("*", async (req, res, next) => {
+      const url = req.originalUrl;
+      // Skip API routes, WebSockets, or static file requests with extensions
+      if (url.startsWith("/api/") || (url.includes(".") && !url.endsWith(".html"))) {
+        return next();
+      }
+
+      try {
+        const indexPath = path.join(process.cwd(), "index.html");
+        let template = fs.readFileSync(indexPath, "utf-8");
+        template = await vite.transformIndexHtml(url, template);
+        const finalHtml = injectGoogleVerificationTag(template);
+        res.status(200).set({ "Content-Type": "text/html; charset=utf-8" }).end(finalHtml);
+      } catch (e: any) {
+        vite.ssrFixStacktrace(e);
+        next(e);
+      }
+    });
   } else {
     const distPath = path.join(process.cwd(), "dist");
-    app.use(express.static(distPath));
+    // Serve static files but intercept index.html for dynamic meta tag injection
+    app.use(express.static(distPath, { index: false }));
     app.get("*", (req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
+      const indexPath = path.join(distPath, "index.html");
+      if (fs.existsSync(indexPath)) {
+        const rawHtml = fs.readFileSync(indexPath, "utf-8");
+        const finalHtml = injectGoogleVerificationTag(rawHtml);
+        res.status(200).set({ "Content-Type": "text/html; charset=utf-8" }).send(finalHtml);
+      } else {
+        res.status(404).send("Index HTML not found");
+      }
     });
   }
 
