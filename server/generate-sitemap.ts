@@ -1,10 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { fileURLToPath } from 'url';
-import { MOCK_SITES, CATEGORIES } from '../src/data/mockSites.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { MOCK_SITES, CATEGORIES } from '../src/data/mockSites';
 
 export interface SitemapRoute {
   path: string;
