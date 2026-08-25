@@ -2,134 +2,638 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>daily</changefreq>
-    <priority>1.0</priority>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/site-b-ecommerce</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.90</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/seller</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/downloads</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.70</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=all</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.90</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=barbearia</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=barbearia</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=restaurante</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=restaurante</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=hotel</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=hotel</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=agencia</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=agencia</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=portfolio</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=portfolio</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=fotografia</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=fotografia</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=escola</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=escola</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=igreja</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=igreja</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=ecommerce</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=ecommerce</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=imobiliaria</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=imobiliaria</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=clinica</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=clinica</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=ginasio</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=ginasio</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=salao</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=salao</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=oficina</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=oficina</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=cafe</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=cafe</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=blog</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=blog</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=startup</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=startup</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=construcao</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=construcao</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=eventos</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=eventos</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
   </url>
   <url>
     <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?category=freelancer</loc>
-    <lastmod>2026-08-23</lastmod>
+    <lastmod>2026-08-25</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?category=freelancer</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=barber-elite-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=barber-elite-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/barber-elite-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=bistro-gourmet-restaurant</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=bistro-gourmet-restaurant</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/bistro-gourmet-restaurant</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=grand-resort-hotel</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=grand-resort-hotel</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/grand-resort-hotel</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=nexus-agency-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=nexus-agency-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/nexus-agency-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=aura-portfolio-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=aura-portfolio-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/aura-portfolio-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=lumiere-photo-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=lumiere-photo-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/lumiere-photo-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=edulearn-school-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=edulearn-school-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/edulearn-school-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=grace-church-community</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=grace-church-community</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/grace-church-community</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=novastore-fashion-ecommerce</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=novastore-fashion-ecommerce</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/novastore-fashion-ecommerce</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=prime-realestate-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=prime-realestate-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/prime-realestate-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=vita-clinica-medica</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=vita-clinica-medica</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/vita-clinica-medica</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=titan-gym-fitness</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=titan-gym-fitness</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/titan-gym-fitness</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=bella-salao-estetica</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=bella-salao-estetica</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/bella-salao-estetica</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=auto-mecanica-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=auto-mecanica-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/auto-mecanica-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=grao-nobre-cafe</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=grao-nobre-cafe</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/grao-nobre-cafe</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=the-chronicle-magazine</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=the-chronicle-magazine</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/the-chronicle-magazine</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=saasflow-startup-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=saasflow-startup-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/saasflow-startup-pro</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=apex-construcao-civil</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=apex-construcao-civil</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/apex-construcao-civil</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=celebrate-eventos-casamentos</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=celebrate-eventos-casamentos</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/celebrate-eventos-casamentos</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/?product=pro-freelancer-copywriter</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/marketplace?product=pro-freelancer-copywriter</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app/demo/pro-freelancer-copywriter</loc>
+    <lastmod>2026-08-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
   </url>
 </urlset>

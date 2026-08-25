@@ -883,6 +883,8 @@ function collectWorkspaceFilesForGithub(dir: string, baseDir: string = dir, file
 
 // ==================== API ROUTES ==================== //
 
+import { buildSitemapXml, getPublicRoutes } from "./server/generate-sitemap";
+
 // Healthcheck
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
@@ -911,36 +913,8 @@ app.get("/sitemap.xml", (req, res) => {
   const host = req.get("host") || "ais-pre-o34fdgj3pna42sqf37qhxo-5633841879.europe-west1.run.app";
   const protocol = req.protocol === "http" && !host.includes("localhost") ? "https" : req.protocol;
   const baseUrl = `${protocol}://${host}`;
-  const today = new Date().toISOString().split("T")[0];
 
-  const categories = [
-    "all", "barbearia", "restaurante", "hotel", "agencia", "portfolio", 
-    "fotografia", "escola", "igreja", "ecommerce", "imobiliaria", "clinica", 
-    "ginasio", "salao", "oficina", "cafe", "blog", "startup", "construcao", 
-    "eventos", "freelancer"
-  ];
-
-  const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>${baseUrl}/</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/site-b-ecommerce</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-${categories.map(cat => `  <url>
-    <loc>${baseUrl}/?category=${cat}</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>`).join("\n")}
-</urlset>`;
+  const sitemapXml = buildSitemapXml(baseUrl);
 
   res.setHeader("Content-Type", "application/xml; charset=utf-8");
   res.send(sitemapXml);
